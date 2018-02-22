@@ -37,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
                     ft.replace(R.id.miContainer, currentFrag);
                     ft.commit();
                     return true;
+
+                case R.id.navigation_google:
+
+                    currentFrag = new GoogleFragment();
+                    ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.miContainer, currentFrag);
+                    ft.commit();
+                    return true;
             }
 
             return true;
