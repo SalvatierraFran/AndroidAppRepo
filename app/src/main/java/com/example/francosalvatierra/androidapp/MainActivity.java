@@ -45,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
                     ft.replace(R.id.miContainer, currentFrag);
                     ft.commit();
                     return true;
+
+                case R.id.navigation_weather:
+
+                    currentFrag = new WeatherFragment();
+                    ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.miContainer, currentFrag);
+                    ft.commit();
+                    return true;
             }
 
             return true;

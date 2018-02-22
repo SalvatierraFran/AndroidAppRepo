@@ -3,6 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_mapa">Mapa</string>
     <string name="title_google">Google</string>
+    <string name="title_weather">Tiempo</string>
     <string name="google_maps_key">AIzaSyCBzmB4F51g8bEnwqAlXrv-xc9MjPwiH7I</string>
 
     <!-- TODO: Remove or change this placeholder text -->
