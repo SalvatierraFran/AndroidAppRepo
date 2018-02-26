@@ -9,12 +9,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.francosalvatierra.androidapp.MainActivity">
 
-
     <FrameLayout
         android:id="@+id/miContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></FrameLayout>
-
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     Fragment currentFrag = null;
     FragmentTransaction ft = null;
+    public static long lastUpdateTime = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
                     currentFrag = new WeatherFragment();
                     ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.miContainer, currentFrag);
+                    ft.commit();
+                    return true;
+
+                case R.id.navigation_database:
+
+                    currentFrag = new DbFragment();
+                    ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.miContainer, currentFrag);
                     ft.replace(R.id.miContainer, currentFrag);
                     ft.commit();
                     return true;

@@ -1,7 +1,7 @@
 package com.example.francosalvatierra.androidapp;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,27 +9,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.francosalvatierra.androidapp.DataModel.WeatherContract;
+import com.example.francosalvatierra.androidapp.DataModel.WeatherDbHelper;
 import com.example.francosalvatierra.androidapp.Utils.AsynkConnector;
 import com.example.francosalvatierra.androidapp.Utils.Callback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
+
+import android.widget.Toast;
 
 
 public class WeatherFragment extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getData();
+        if(GuardarHora()){
+            getDataFromService();
+        }else{
+            getDataFromDB();
+        }
+
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
-    public void getData()
+    private void getDataFromDB() {
+        
+    }
+
+    public void getDataFromService()
     {
         String content = "{}";
 
@@ -95,9 +108,42 @@ public class WeatherFragment extends Fragment {
 
             TextView desc = (TextView)this.getActivity().findViewById(R.id.weather_desc);
             desc.setText(w.getJSONObject(0).getString("description"));
+
+            GuardarHora();
+
+            WeatherDbHelper conn = new WeatherDbHelper(this.getContext(), "WeatherDB", null, WeatherDbHelper.DATABASE_VERSION);
+
+            SQLiteDatabase db = conn.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+
+            values.put(WeatherContract.WeatherEntry.CAMPO_CIUDAD, reader.getString("name"));
+            values.put(WeatherContract.WeatherEntry.CAMPO_DESC, w.getJSONObject(0).getString("description"));
+            values.put(WeatherContract.WeatherEntry.CAMPO_HUMEDAD, d.getString("humidity"));
+            values.put(WeatherContract.WeatherEntry.CAMPO_TEMP, d.getString("temp"));
+            values.put(WeatherContract.WeatherEntry.CAMPO_TEMPMIN, d.getString("temp_min"));
+            values.put(WeatherContract.WeatherEntry.CAMPO_TEMPMAX, d.getString("temp_max"));
+
+            Long idResultante = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, WeatherContract.WeatherEntry._ID, values);
+
+            Toast.makeText(this.getActivity().getApplicationContext(), "Id Registro: "+ idResultante, Toast.LENGTH_SHORT).show();
+
         }catch (JSONException e)
         {
             System.out.println(e.getMessage());
         }
+    }
+
+    public boolean GuardarHora()
+    {
+        int delta = 30 *60*1000;
+        long currentTime = System.currentTimeMillis();
+
+        if(currentTime-MainActivity.lastUpdateTime >= delta){
+            MainActivity.lastUpdateTime=currentTime;
+            return true;
+        }
+        return false;
+
     }
 }
