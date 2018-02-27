@@ -1,6 +1,7 @@
 package com.example.francosalvatierra.androidapp;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.francosalvatierra.androidapp.DataModel.WeatherContract;
 import com.example.francosalvatierra.androidapp.DataModel.WeatherDbHelper;
+import com.example.francosalvatierra.androidapp.Entities.WeatherData;
 import com.example.francosalvatierra.androidapp.Utils.AsynkConnector;
 import com.example.francosalvatierra.androidapp.Utils.Callback;
 
@@ -20,8 +22,12 @@ import org.json.JSONObject;
 
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 public class WeatherFragment extends Fragment {
+    WeatherData data;
+    ArrayList<WeatherData> lista = new ArrayList<WeatherData>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +45,19 @@ public class WeatherFragment extends Fragment {
     }
 
     private void getDataFromDB() {
-        
+        WeatherDbHelper conn = new WeatherDbHelper(this.getContext(), "WeatherDB", null, WeatherDbHelper.DATABASE_VERSION);
+
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM Weather", null);
+
+        if(c.moveToLast())
+        {
+            do{
+                data = new WeatherData(c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getString(6));
+                lista.add(data);
+            }while(c.moveToNext());
+        }
     }
 
     public void getDataFromService()

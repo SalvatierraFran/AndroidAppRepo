@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.location.*;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -33,6 +35,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap mGoogleMap;
     MapView mapView;
     View mView;
+    ProgressBar mProgressBar;
 
     public MapFragment() {
     }
@@ -45,6 +48,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -64,6 +69,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
 
         }
+
+        mProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.progressBar2);
+        mProgressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
