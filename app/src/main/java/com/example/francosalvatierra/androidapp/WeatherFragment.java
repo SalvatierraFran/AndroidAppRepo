@@ -19,6 +19,7 @@ import com.example.francosalvatierra.androidapp.Utils.Callback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import android.widget.Toast;
 
@@ -58,6 +59,26 @@ public class WeatherFragment extends Fragment {
                 lista.add(data);
             }while(c.moveToNext());
         }
+
+        this.getActivity().setContentView(R.layout.fragment_weather);
+
+        TextView ciudadTv = (TextView)this.getActivity().findViewById(R.id.weather_name);
+        ciudadTv.setText(lista.get(0).getCiudad());
+
+        TextView descTv = (TextView)this.getActivity().findViewById(R.id.weather_desc);
+        descTv.setText(lista.get(0).getDesc());
+
+        TextView tempTv = (TextView)this.getActivity().findViewById(R.id.weather_temp);
+        tempTv.setText(lista.get(0).getTemp());
+
+        TextView minTv = (TextView)this.getActivity().findViewById(R.id.weather_tempmin);
+        minTv.setText(lista.get(0).getMin());
+
+        TextView maxTv = (TextView)this.getActivity().findViewById(R.id.weather_tempmax);
+        maxTv.setText(lista.get(0).getMax());
+
+        TextView humedadTv = (TextView)this.getActivity().findViewById(R.id.weather_humidity);
+        humedadTv.setText(lista.get(0).getHumedad());
     }
 
     public void getDataFromService()
